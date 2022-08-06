@@ -6,8 +6,23 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import axios from "axios";
+import { getTransactions } from "../../redux/reducers/TransactionSlice";
 
 const List = () => {
+  const dispatch=useDispatch();
+  let token = localStorage.getItem('token');
+  console.log(token);
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+  useEffect(()=>{
+    axios.get("http://34.233.120.213:3000/transactions",config).then((result)=>{
+      dispatch(getTransactions(result.data))
+    },[])
+  })
   const rows = [
     {
       id: 1143155,

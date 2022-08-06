@@ -8,9 +8,29 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import axios from "axios";
+import { getAllUsers } from "../../redux/reducers/UserSlice";
+
 
 const Navbar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const selector = useSelector(state => state.get);
+  const execute=useDispatch();
+  let token = localStorage.getItem('token');
+  console.log(token);
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+  useEffect(()=>{
+axios.get('http://34.233.120.213:3000/users',config).then((result)=>{
+  console.log('====================================');
+  console.log(result);
+  console.log('====================================');
+  execute(getAllUsers(result.data))
+})
+  },[])
 
   return (
     <div className="navbar">

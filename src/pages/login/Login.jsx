@@ -10,6 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  var error="";
   async function loginUser() {
     console.log(email, password);
 
@@ -17,16 +19,24 @@ const Login = () => {
     axios
       .post("http://34.233.120.213:3000/login", loginInfo)
       .then((result) => {
-        localStorage.setItem("token", result.data.token);
+        console.log('====================================');
+        console.log(result);
+        console.log('====================================');
+        if(result.code=="ERR_BAD_REQUEST"){
+          error="You have entered the wrong password";
+        }else{
+           localStorage.setItem("token", result.data.token);
 
         dispatch(loginProcess(result.data));
-        navigate("/");
+        navigate("/"); 
+        }
+      
       })
       .catch((e) => {
         console.log(e);
       });
   }
-
+  
   return (
     <>
       <div class="align">
@@ -74,6 +84,7 @@ const Login = () => {
 
               <div className="form__field">
                 <input type="submit" value="Login" onClick={loginUser} />
+                <p>{error}</p>
               </div>
             </div>
           </div>

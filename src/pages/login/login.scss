@@ -4,7 +4,7 @@
 //     top: 50%;
 //     display: grid;
 // }
-$base-bgcolor: #354152;
+$base-bgcolor: white;
 $base-color: #7e8ba3;
 $base-font-weight: 300;
 $base-font-size: 1rem;
@@ -23,7 +23,9 @@ html {
 body {
   background-color: $base-bgcolor;
   color: $base-color;
-  font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family, $base-font-family-fallback;
+  font: $base-font-weight #{$base-font-size}/#{$base-line-height}
+      $base-font-family,
+    $base-font-family-fallback;
   margin: 0;
   min-height: 100%;
 }
@@ -32,9 +34,8 @@ body {
   align-items: center;
   display: flex;
   flex-direction: row;
-margin-top: 100px;
+  margin-top: 100px;
   &__item {
-
     &--start {
       align-self: flex-start;
     }
@@ -42,20 +43,16 @@ margin-top: 100px;
     &--end {
       align-self: flex-end;
     }
-
   }
-
 }
 
 .site {
-
   &__main {
   }
 
   &__logo {
     margin-bottom: 2rem;
   }
-
 }
 
 $input-placeholder-color: #7e8ba3;
@@ -67,28 +64,24 @@ input {
   &::placeholder {
     color: $input-placeholder-color;
   }
-
 }
-.form__field_text{
-color:white;
+.form__field_text {
+  color: black;
 }
 .form {
-
   &__field {
     margin-bottom: 1rem;
   }
 
   input {
     outline: 0;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
 
     &[type="email"],
     &[type="password"] {
       width: 100%;
     }
-
   }
-
 }
 
 $grid-max-width: 25rem;
@@ -116,7 +109,7 @@ svg {
 $link-color: #7e8ba3;
 
 a {
-  color: $link-color
+  color: $link-color;
 }
 
 .register {
@@ -151,7 +144,5 @@ a {
       margin-bottom: 6rem;
       width: 100%;
     }
-
   }
-
 }
