@@ -29,7 +29,7 @@ const Sidebar = () => {
         <ul>
           <p className="title">MAIN</p>
           <li>
-            <DashboardIcon className="icon" />
+            <DashboardIcon className="icon" /> 
             <span>Dashboard</span>
             <Link to="/" style={{ textDecoration: "none" }}></Link>
           </li>
