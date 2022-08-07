@@ -110,7 +110,6 @@ console.log('====================================');
               <TableCell className="tableCell">{row.following.length}</TableCell>
               <TableCell className="tableCell">{row.userName}</TableCell>
               <TableCell className="tableCell">{}</TableCell>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>
