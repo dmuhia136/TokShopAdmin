@@ -25,9 +25,6 @@ const Navbar = () => {
 };
   useEffect(()=>{
 axios.get('http://34.233.120.213:3000/users',config).then((result)=>{
-  console.log('====================================');
-  console.log(result);
-  console.log('====================================');
   execute(getAllUsers(result.data))
 })
   },[])

@@ -6,11 +6,29 @@ import Featured from "../../components/featured/Featured";
 import Chart from "../../components/chart/Chart";
 import Table from "../../components/table/Table";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import { getOrders } from "../../redux/reducers/OrderSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
   let token = localStorage.getItem("token");
   console.log(token);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  useEffect(() => {
+    async function fetchOrders() {
+      await axios
+        .get("http://34.233.120.213:3000/orders/all/orders", config)
+        .then((result) => {
+          dispatch(getOrders(result.data));
+        });
+    }
+    fetchOrders();
+  }, []);
 
   if (token == "") {
     navigate("/login");

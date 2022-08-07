@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { getTransactions } from "../../redux/reducers/TransactionSlice";
@@ -23,6 +23,10 @@ const List = () => {
       dispatch(getTransactions(result.data))
     },[])
   })
+  // const users = useSelector((state) => state.allusers)
+  // console.log('====================================');
+  // console.log(users);
+  // console.log('===================================='); 
   const rows = [
     {
       id: 1143155,
