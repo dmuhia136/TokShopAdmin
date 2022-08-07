@@ -23,10 +23,12 @@ const List = () => {
       dispatch(getTransactions(result.data))
     },[])
   })
-  // const users = useSelector((state) => state.allusers)
-  // console.log('====================================');
-  // console.log(users);
-  // console.log('===================================='); 
+  
+const users=useSelector((state)=>state.allusers.value);
+console.log('====================================');
+console.log("users",users);
+console.log('====================================');
+
   const rows = [
     {
       id: 1143155,
@@ -84,31 +86,30 @@ const List = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className="tableCell">Tracking ID</TableCell>
-            <TableCell className="tableCell">Product</TableCell>
-            <TableCell className="tableCell">Customer</TableCell>
-            <TableCell className="tableCell">Date</TableCell>
-            <TableCell className="tableCell">Amount</TableCell>
-            <TableCell className="tableCell">Payment Method</TableCell>
-            <TableCell className="tableCell">Status</TableCell>
+            <TableCell className="tableCell">First Name</TableCell>
+            <TableCell className="tableCell">Last Name</TableCell>
+            <TableCell className="tableCell">Profile Photo</TableCell>
+            <TableCell className="tableCell">Followers</TableCell>
+            <TableCell className="tableCell">Following</TableCell>
+            <TableCell className="tableCell">Username</TableCell>
+            <TableCell className="tableCell">Shop</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell className="tableCell">{row.id}</TableCell>
+          {users.map((row) => (
+            <TableRow key={row._id}>
+              <TableCell className="tableCell">{row.firstname}</TableCell>
+              <TableCell className="tableCell">{row.lastname}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
-                  <img src={row.img} alt="" className="image" />
-                  {row.product}
+                  <img src={row.profilePhoto} alt="" className="image" />
+                  {row.email}
                 </div>
               </TableCell>
-              <TableCell className="tableCell">{row.customer}</TableCell>
-              <TableCell className="tableCell">{row.date}</TableCell>
-              <TableCell className="tableCell">{row.amount}</TableCell>
-              <TableCell className="tableCell">{row.method}</TableCell>
-              <TableCell className="tableCell">
-                <span className={`status ${row.status}`}>{row.status}</span>
+              <TableCell className="tableCell">{row.followers.length}</TableCell>
+              <TableCell className="tableCell">{row.following.length}</TableCell>
+              <TableCell className="tableCell">{row.userName}</TableCell>
+              <TableCell className="tableCell">{}</TableCell>
               </TableCell>
             </TableRow>
           ))}
