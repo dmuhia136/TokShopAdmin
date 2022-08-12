@@ -1,10 +1,9 @@
 import "./datatable.scss";
-import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
+import { userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import "../table/table.scss";
+import "./single.scss";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,9 +12,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const Datatable = () => {
+const ProductTable = () => {
   const [data, setData] = useState(userRows);
-  const users=useSelector((state)=> state.allusers.value);
+  const products = useSelector((state) => state.product.value);
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
@@ -47,32 +46,29 @@ const Datatable = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className="tableCell">First Name</TableCell>
-            <TableCell className="tableCell">Last Name</TableCell>
-            <TableCell className="tableCell">Profile Photo</TableCell>
-            <TableCell className="tableCell">Followers</TableCell>
-            <TableCell className="tableCell">Following</TableCell>
-            <TableCell className="tableCell">Username</TableCell>
+            <TableCell className="tableCell">Product Name</TableCell>
+            <TableCell className="tableCell">Product Price</TableCell>
+            <TableCell className="tableCell">Product Image</TableCell>
+            <TableCell className="tableCell">Product Quantity</TableCell>
+            <TableCell className="tableCell">Owner</TableCell>
+            <TableCell className="tableCell">Product Category</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((row) => (
+          {products.map((row) => (
             <TableRow key={row._id}>
-              <TableCell className="tableCell">{row.firstname}</TableCell>
-              <TableCell className="tableCell">{row.lastname}</TableCell>
+              <TableCell className="tableCell">{row.name}</TableCell>
+              <TableCell className="tableCell">{row.price}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
-                  <img src={row.profilePhoto} alt="" className="image" />
-                  {row.email}
+                  <img src={row.images[0]} alt="" className="image" />
                 </div>
               </TableCell>
+              <TableCell className="tableCell">{row.quantity}</TableCell>
               <TableCell className="tableCell">
-                {row.followers.length}
+                {row.ownerId.userName}
               </TableCell>
-              <TableCell className="tableCell">
-                {row.following.length}
-              </TableCell>
-              <TableCell className="tableCell">{row.userName}</TableCell>
+              <TableCell className="tableCell">{row.categories.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -81,4 +77,4 @@ const Datatable = () => {
   );
 };
 
-export default Datatable;
+export default ProductTable;

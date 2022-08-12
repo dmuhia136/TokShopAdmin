@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    rooms: [],
+    currentUser: [],
 }
 
-export const RoomSlice = createSlice({
-  name: "rooms",
+export const CurrentUserSlice = createSlice({
+  name: "clubs",
   initialState,
   reducers: {
-    getAllRooms: (state, {payload}) => {
+    getUser: (state, {payload}) => {
       state.value = payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { getAllRooms } = RoomSlice.actions;
+export const { getUser } = CurrentUserSlice.actions;
 
-export default RoomSlice.reducer;
+export default CurrentUserSlice.reducer;

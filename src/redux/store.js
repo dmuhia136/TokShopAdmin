@@ -7,6 +7,7 @@ import ProductReducer from "./reducers/ProductSlice";
 import RoomReducer from "./reducers/RoomSlice";
 import ShopReducer from "./reducers/ShopSlice";
 import ClubSlice from "./reducers/ClubSlice";
+import CurrentUserSlice from "./reducers/CurrentUserSlice";
 export default configureStore({
   reducer: {
     login: LoginReducer,
@@ -17,5 +18,6 @@ export default configureStore({
     rooms: RoomReducer,
     shops: ShopReducer,
     clubs: ClubSlice,
+    currentUser: CurrentUserSlice,
   },
 });

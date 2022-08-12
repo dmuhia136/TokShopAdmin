@@ -10,8 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  var error="";
+
+  var error = "";
   async function loginUser() {
     console.log(email, password);
 
@@ -19,32 +19,31 @@ const Login = () => {
     axios
       .post("http://34.233.120.213:3000/login", loginInfo)
       .then((result) => {
-        console.log('====================================');
+        console.log("====================================");
         console.log(result);
-        console.log('====================================');
-        if(result.code=="ERR_BAD_REQUEST"){
-          error="You have entered the wrong password";
-        }else{
-           localStorage.setItem("token", result.data.token);
-
-        dispatch(loginProcess(result.data));
-        navigate("/"); 
+        console.log("====================================");
+        if (result.code == "ERR_BAD_REQUEST") {
+          error = "You have entered the wrong password";
+        } else {
+          localStorage.setItem("token", result.data.token);
+          localStorage.setItem("userID", result.data._id);
+          dispatch(loginProcess(result.data));
+          navigate("/");
         }
-      
       })
       .catch((e) => {
         console.log(e);
       });
   }
-  
+
   return (
     <>
-      <div class="align">
-        <div class="grid align__item">
-          <div class="register">
+      <div className="align">
+        <div className="grid align__item">
+          <div className="register">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="site__logo"
+              className="site__logo"
               width="56"
               height="84"
               viewBox="77.7 214.9 274.7 412"
@@ -77,7 +76,7 @@ const Login = () => {
                 <input
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  className="form__field_text"
+                  className="form__fiNameeld_text"
                   placeholder="••••••••••••"
                 />
               </div>

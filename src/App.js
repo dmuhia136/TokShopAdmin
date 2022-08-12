@@ -8,6 +8,10 @@ import { productInputs, userInputs } from "./formSource";
 import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
+import OrderPage from "./pages/Order/Order";
+import Product from "./pages/Products/Product";
+import Rooms from "./pages/Rooms/Room";
+import Shops from "./pages/Shops/Shop";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -27,8 +31,32 @@ function App() {
                 element={<New inputs={userInputs} title="Add New User" />}
               />
             </Route>
+            <Route path="orders">
+              <Route index element={<OrderPage />} />
+              <Route path=":orderId" element={<Single />} />
+              {/* <Route
+                path="new"
+                element={<New inputs={orderInputs} title="Add New order" />}
+              /> */}
+            </Route>
             <Route path="products">
-              <Route index element={<List />} />
+              <Route index element={<Product />} />
+              <Route path=":productId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={productInputs} title="Add New Product" />}
+              />
+            </Route>
+            <Route path="rooms">
+              <Route index element={<Rooms />} />
+              <Route path=":productId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={productInputs} title="Add New Product" />}
+              />
+            </Route>
+            <Route path="shops">
+              <Route index element={<Shops />} />
               <Route path=":productId" element={<Single />} />
               <Route
                 path="new"

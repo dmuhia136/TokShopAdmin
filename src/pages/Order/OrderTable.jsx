@@ -4,7 +4,7 @@ import { userColumns, userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import "../table/table.scss";
+import "./single.scss";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,9 +13,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const Datatable = () => {
+const OrderTable = () => {
   const [data, setData] = useState(userRows);
-  const users=useSelector((state)=> state.allusers.value);
+  const orders=useSelector((state)=> state.orders.value);
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
@@ -47,32 +47,29 @@ const Datatable = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className="tableCell">First Name</TableCell>
-            <TableCell className="tableCell">Last Name</TableCell>
-            <TableCell className="tableCell">Profile Photo</TableCell>
-            <TableCell className="tableCell">Followers</TableCell>
-            <TableCell className="tableCell">Following</TableCell>
-            <TableCell className="tableCell">Username</TableCell>
+            <TableCell className="tableCell">Customer Name</TableCell>
+            <TableCell className="tableCell">Quantity</TableCell>
+            <TableCell className="tableCell">Shipping Address</TableCell>
+            <TableCell className="tableCell">Subtotal</TableCell>
+            <TableCell className="tableCell">Order Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((row) => (
+          {orders.map((row) => (
             <TableRow key={row._id}>
-              <TableCell className="tableCell">{row.firstname}</TableCell>
-              <TableCell className="tableCell">{row.lastname}</TableCell>
+              <TableCell className="tableCell">{row.customerId.firstName } {row.customerId.lastName}</TableCell>
+              <TableCell className="tableCell">{row.quantity}</TableCell>
               <TableCell className="tableCell">
                 <div className="cellWrapper">
-                  <img src={row.profilePhoto} alt="" className="image" />
-                  {row.email}
+                  {JSON.stringify(row.shippingAddress.name)}
                 </div>
               </TableCell>
               <TableCell className="tableCell">
-                {row.followers.length}
+                {row.subTotal}
               </TableCell>
               <TableCell className="tableCell">
-                {row.following.length}
+                {row.status}
               </TableCell>
-              <TableCell className="tableCell">{row.userName}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -81,4 +78,4 @@ const Datatable = () => {
   );
 };
 
-export default Datatable;
+export default OrderTable;
