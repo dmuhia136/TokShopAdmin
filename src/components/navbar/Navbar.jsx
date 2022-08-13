@@ -27,6 +27,7 @@ const Navbar = () => {
   console.log(token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const currentUser=useSelector((state)=>state.currentUser.value)
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
@@ -132,9 +133,9 @@ const Navbar = () => {
             <ListOutlinedIcon className="icon" />
           </div>
           <div className="item">
+            <span>{currentUser.userName}</span>
             <img
-              src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-              alt=""
+              src={currentUser.profilePhoto} alt=""
               className="avatar"
             />
           </div>

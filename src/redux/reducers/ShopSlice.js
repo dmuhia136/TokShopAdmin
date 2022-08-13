@@ -10,11 +10,11 @@ export const ShopSlice = createSlice({
   reducers: {
     getAllShops: (state, {payload}) => {
       state.value = payload;
-    },
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { getAllShops } = ShopSlice.actions;
+export const { getAllShops,deleteShop } = ShopSlice.actions;
 
 export default ShopSlice.reducer;

@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    currentUser: [],
-}
+// const initialState = {
+//     currentUser: [],
+// }
 
 export const CurrentUserSlice = createSlice({
   name: "clubs",
-  initialState,
+  initialState:{
+    value:[]
+  },
   reducers: {
     getUser: (state, {payload}) => {
       state.value = payload;

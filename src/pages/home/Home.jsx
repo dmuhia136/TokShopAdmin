@@ -26,74 +26,6 @@ const Home = () => {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  // async function fetchOrders() {
-  //   await axios
-  //     .get("http://34.233.120.213:3000/orders/all/orders", config)
-  //     .then((result) => {
-  //       dispatch(getOrders(result.data));
-  //     });
-  // }
-  // async function getRooms() {
-  //   await axios
-  //     .get("http://34.233.120.213:3000/rooms/get/ended/0", config)
-  //     .then((result) => {
-  //       dispatch(getAllRooms(result.data));
-  //     });
-  // }
-  // async function getShops() {
-  //   await axios
-  //     .get("http://34.233.120.213:3000/shop", config)
-  //     .then((result) => {
-  //       dispatch(getAllShops(result.data));
-  //     });
-  // }
-  // async function getProducts() {
-  //   await axios
-  //     .get("http://34.233.120.213:3000/products", config)
-  //     .then((result) => {
-  //       dispatch(getAllProducts(result.data));
-  //     });
-  // }
-  // async function getClubs() {
-  //   await axios
-  //     .get("http://34.233.120.213:3000/club/", config)
-  //     .then((result) => {
-  //       dispatch(getAllClubs(result.data));
-  //     });
-  // }
-
-  // async function getClubs() {
-  //   await axios
-  //     .get("http://34.233.120.213:3000/club/", config)
-  //     .then((result) => {
-  //       dispatch(getAllClubs(result.data));
-  //     });
-  // }
-  // async function getUserData() {
-  //   await axios
-  //     .get(`http://34.233.120.213:3000/users/${userID}`, config)
-  //     .then((result) => {
-  //       dispatch(getUser(result.data));
-  //     });
-  // }
-  // async function getUsers() {
-  //   axios.get("http://34.233.120.213:3000/users", config).then((result) => {
-  //     console.log("====================================");
-  //     console.log(result.data);
-  //     console.log("====================================");
-  //     dispatch(getAllUsers(result.data));
-  //   });
-  // }
-
-  // useEffect(() => {
-  //   fetchOrders();
-  //   getRooms();
-  //   getProducts();
-  //   getShops();
-  //   getClubs();
-  //   getUserData();
-  //   getUsers();
-  // }, []);
 
   if (token == "") {
     navigate("/login");
@@ -112,10 +44,6 @@ const Home = () => {
           <div className="charts">
             <Featured />
             <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} />
-          </div>
-          <div className="listContainer">
-            <div className="listTitle">Latest Transactions</div>
-            <Table />
           </div>
         </div>
       </div>
