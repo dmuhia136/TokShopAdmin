@@ -41,6 +41,7 @@ const List = () => {
             <TableCell className="tableCell">First Name</TableCell>
             <TableCell className="tableCell">Last Name</TableCell>
             <TableCell className="tableCell">Profile Photo</TableCell>
+            <TableCell className="tableCell">Email</TableCell>
             <TableCell className="tableCell">Followers</TableCell>
             <TableCell className="tableCell">Following</TableCell>
             <TableCell className="tableCell">Username</TableCell>
@@ -58,6 +59,8 @@ const List = () => {
                   {row.email}
                 </div>
               </TableCell>
+              <TableCell className="tableCell">{row.email}</TableCell>
+
               <TableCell className="tableCell">
                 {row.followers.length}
               </TableCell>
@@ -65,7 +68,7 @@ const List = () => {
                 {row.following.length}
               </TableCell>
               <TableCell className="tableCell">{row.userName}</TableCell>
-              <TableCell className="tableCell">{}</TableCell>
+              <TableCell className="tableCell">{row.shop[0].name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

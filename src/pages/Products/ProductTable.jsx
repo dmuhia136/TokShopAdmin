@@ -1,7 +1,7 @@
 import "./datatable.scss";
 import { userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import "./single.scss";
 import Table from "@mui/material/Table";
@@ -11,6 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import axios from "axios";
 
 const ProductTable = () => {
   const [data, setData] = useState(userRows);
@@ -41,6 +42,21 @@ const ProductTable = () => {
       },
     },
   ];
+  let token = localStorage.getItem("token");
+  let userID = localStorage.getItem("userID");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const [product, productList] = useState([]);
+  async function getProducts() {
+    axios.get("http://34.233.120.213:3000/products", config).then((result) => {
+      productList(result.data);
+      console.log(result.data);
+    });
+  }
+  useEffect(() => {
+    getProducts();
+  }, []);
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -55,7 +71,7 @@ const ProductTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((row) => (
+          {product.map((row) => (
             <TableRow key={row._id}>
               <TableCell className="tableCell">{row.name}</TableCell>
               <TableCell className="tableCell">{row.price}</TableCell>
@@ -68,7 +84,7 @@ const ProductTable = () => {
               <TableCell className="tableCell">
                 {row.ownerId.userName}
               </TableCell>
-              <TableCell className="tableCell">{row.categories.name}</TableCell>
+              <TableCell className="tableCell">{row.categories[0]}</TableCell>
             </TableRow>
           ))}
         </TableBody>

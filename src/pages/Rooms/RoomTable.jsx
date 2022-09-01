@@ -1,7 +1,7 @@
 import "./datatable.scss";
 import { userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import "./single.scss";
 import Table from "@mui/material/Table";
@@ -11,11 +11,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import moment from 'moment'
-
+import moment from "moment";
+import axios from "axios";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 const RoomsTable = () => {
   const [data, setData] = useState(userRows);
-  const rooms = useSelector((state) => state.rooms.value[0].data);
+
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
@@ -42,6 +44,40 @@ const RoomsTable = () => {
       },
     },
   ];
+  let token = localStorage.getItem("token");
+  let userID = localStorage.getItem("userID");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const [room, roomList] = useState([]);
+
+  async function deleteRoom(roomid) {
+
+    try {
+      await axios
+        .delete(`http://34.233.120.213:3000/rooms/rooms/${roomid}`,config)
+        .then((e) => {
+          // message.success("Shop deleted");
+          console.log('====================================');
+          console.log(e);
+          console.log('====================================');
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  async function getRooms() {
+    axios
+      .get("http://34.233.120.213:3000/rooms/get/ended/0", config)
+      .then((result) => {
+        roomList(result.data[0].data);
+      });
+  }
+  useEffect(() => {
+    getRooms();
+  }, []);
+
+
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -54,23 +90,41 @@ const RoomsTable = () => {
             <TableCell className="tableCell">Product Price</TableCell>
             <TableCell className="tableCell">Product discount</TableCell>
             <TableCell className="tableCell">Recording Time</TableCell>
+            <TableCell className="tableCell">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rooms.map((row) => (
+          {room.map((row) => (
             <TableRow key={row._id}>
-              <TableCell className="tableCell">{row.hostIds.forEach((user)=>{
-                <p>{user.firstName} {user.lastName}</p>
-              })}</TableCell>
-              <TableCell className="tableCell">{row.title}</TableCell>
-             
-              <TableCell className="tableCell">{row.speakerIds.length}</TableCell>
               <TableCell className="tableCell">
-                {row.allUsers.length}
+                {row.ownerId[0].firstName}
               </TableCell>
+              <TableCell className="tableCell">
+                {row.title == "" ? "No room title" : row.title}
+              </TableCell>
+
+              <TableCell className="tableCell">
+                {row.speakerIds.length}
+              </TableCell>
+              <TableCell className="tableCell">{row.allUsers.length}</TableCell>
               <TableCell className="tableCell">{row.productPrice}</TableCell>
-              <TableCell className="tableCell">{row.discount}</TableCell>
-              <TableCell className="tableCell">{moment(row.activeTime).format("YYYY:MM:DD HH:MM")}</TableCell>
+              <TableCell className="tableCell">
+                {row.discount == null ? "No discount" : row.discount}
+              </TableCell>
+              <TableCell className="tableCell">
+                {moment(row.activeTime).format("YYYY:MM:DD HH:MM")}
+              </TableCell>
+              <TableCell className="tableCell"> <button
+                  type="button"
+                  id="deleteButton"
+                  className="bg-red-500"
+                  onClick={() => {
+                    deleteRoom(row._id);
+                  }}
+                >
+                  Delete
+                </button></TableCell>
+
             </TableRow>
           ))}
         </TableBody>

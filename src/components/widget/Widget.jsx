@@ -5,10 +5,28 @@ import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalance
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import { useSelector } from "react-redux";
+import axios from 'axios';
+import { useState,useEffect } from "react";
 
 const Widget = ({ type }) => {
   let data;
-
+  let userCount;
+  let token = localStorage.getItem("token");
+  let userID = localStorage.getItem("userID");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+useEffect(()=>{
+  async function fetchOrders() {
+    await axios
+      .get("http://34.233.120.213:3000/users", config)
+      .then((result) => {
+        console.log("users",result.data.length);
+        userCount=result.data.length;
+      });
+  }
+  fetchOrders()
+},[])
   //temporary
   const amount = 100;
   const diff = 20;
@@ -19,6 +37,7 @@ const Widget = ({ type }) => {
         title: "USERS",
         isMoney: false,
         link: "See all users",
+      
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -84,7 +103,8 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+       {data.title=="USER"?userCount:amount }  
+       {/* data.isMoney && "$"`${amount}` */}
         </span>
         <span className="link">{data.link}</span>
       </div>
