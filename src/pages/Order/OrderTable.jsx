@@ -13,6 +13,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const OrderTable = () => {
   const [data, setData] = useState(userRows);
@@ -43,32 +45,34 @@ const OrderTable = () => {
       },
     },
   ];
-  async function deleteShop(orderid) {
-    try {
-      await axios
-        .get(`http://34.233.120.213:3000/orders/orders/${orderid}`)
-        .then((e) => {
-          // message.success("Shop deleted");
-          console.log('====================================');
-          console.log(e);
-          console.log('====================================');
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  const percentage = 66;
   let token = localStorage.getItem("token");
   let userID = localStorage.getItem("userID");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
   const [order, orderList] = useState([]);
+  async function deleteShop(orderid, e) {
+    e.preventDefault();
+    try {
+      await axios
+        .delete(`http://34.233.120.213:3000/orders/orders/${orderid}`, config)
+        .then((e) => {
+          // message.success("Shop deleted");
+          console.log("====================================");
+          console.log(e);
+          console.log("====================================");
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   async function getOrders() {
     axios
       .get("http://34.233.120.213:3000/orders/all/orders", config)
       .then((result) => {
         orderList(result.data);
-        console.log("pdoas",result.data);
+        console.log("pdoas", result.data);
       });
   }
   useEffect(() => {
@@ -88,7 +92,8 @@ const OrderTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {order.map((row) => (
+
+          {order.length==0?<div style={{ width: 200, height: 200,justifyContent: "center"  }}><CircularProgressbar  value={percentage} text={`${percentage}%`} /></div >: order.map((row) => (
             <TableRow key={row._id}>
               <TableCell className="tableCell">
                 {row.customerId.firstName} {row.customerId.lastName}
@@ -101,16 +106,18 @@ const OrderTable = () => {
               </TableCell>
               <TableCell className="tableCell">{row.subTotal}</TableCell>
               <TableCell className="tableCell">{row.status}</TableCell>
-              <TableCell className="tableCell"> <button
+              <TableCell className="tableCell">
+                <button
                   type="button"
                   id="deleteButton"
-                  className="bg-red-500"
+                  className="bg-red-600 p-2 rounded text-white"
                   onClick={() => {
                     deleteShop(row._id);
                   }}
                 >
                   Delete
-                </button></TableCell>
+                </button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -15,6 +15,8 @@ import moment from "moment";
 import axios from "axios";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 const ShopTable = () => {
   const [data, setData] = useState(userRows);
   const shops = useSelector((state) => state.shops.value);
@@ -46,6 +48,8 @@ const ShopTable = () => {
   useEffect(() => {
     getShops();
   }, []);
+  const percentage = 66;
+
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -53,21 +57,25 @@ const ShopTable = () => {
           <TableRow>
             <TableCell className="tableCell font-bold">Shop Name</TableCell>
             <TableCell className="tableCell">Location</TableCell>
-            <TableCell className="tableCell">Description</TableCell>
+            <TableCell className="tableCell  overflow-ellipsis w-25">Description</TableCell>
             <TableCell className="tableCell">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {shop.map((row) => (
+          {shop.length == 0 ? (
+            <div style={{ width: 200, height: 200, margin:"auto" }}>
+              <CircularProgressbar counterClockwise={true} value={percentage} text={`${percentage}%`} />
+            </div>
+          ) :shop.map((row) => (
             <TableRow key={row._id}>
-              <TableCell className="tableCell bg-gray-700">{row.name}</TableCell>
+              <TableCell className="tableCell ">{row.name}</TableCell>
               <TableCell className="tableCell">{row.location}</TableCell>
-              <TableCell className="tableCell">{row.description}</TableCell>
+              <TableCell className="tableCell " >{row.description}</TableCell>
               <TableCell className="tableCell">
                 <button
                   type="button"
                   id="deleteButton"
-                  className="bg-red-500"
+                  className="bg-red-600 p-2 rounded text-white"
                   onClick={() => {
                     deleteShop(row._id);
                   }}

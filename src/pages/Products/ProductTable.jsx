@@ -12,6 +12,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const ProductTable = () => {
   const [data, setData] = useState(userRows);
@@ -48,6 +50,20 @@ const ProductTable = () => {
     headers: { Authorization: `Bearer ${token}` },
   };
   const [product, productList] = useState([]);
+  async function deleteShop(orderid) {
+    try {
+      await axios
+        .delete(`http://34.233.120.213:3000/products/products/${orderid}`, config)
+        .then((e) => {
+          // message.success("Shop deleted");
+          console.log('====================================');
+          console.log(e);
+          console.log('====================================');
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   async function getProducts() {
     axios.get("http://34.233.120.213:3000/products", config).then((result) => {
       productList(result.data);
@@ -57,6 +73,8 @@ const ProductTable = () => {
   useEffect(() => {
     getProducts();
   }, []);
+  const percentage = 66;
+
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -68,10 +86,15 @@ const ProductTable = () => {
             <TableCell className="tableCell">Product Quantity</TableCell>
             <TableCell className="tableCell">Owner</TableCell>
             <TableCell className="tableCell">Product Category</TableCell>
+            <TableCell className="tableCell">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {product.map((row) => (
+          {product.length == 0 ? (
+            <div style={{ width: 200, height: 200, margin:"auto" }}>
+              <CircularProgressbar counterClockwise={true} value={percentage} text={`${percentage}%`} />
+            </div>
+          ) : product.map((row) => (
             <TableRow key={row._id}>
               <TableCell className="tableCell">{row.name}</TableCell>
               <TableCell className="tableCell">{row.price}</TableCell>
@@ -85,6 +108,17 @@ const ProductTable = () => {
                 {row.ownerId.userName}
               </TableCell>
               <TableCell className="tableCell">{row.categories[0]}</TableCell>
+              <TableCell className="tableCell"> <button
+                  type="button"
+                  id="deleteButton"
+                  className="bg-red-600 p-2 rounded text-white"
+                  onClick={() => {
+                    deleteShop(row._id);
+                  }}
+                >
+                  Delete
+                </button></TableCell>
+             
             </TableRow>
           ))}
         </TableBody>

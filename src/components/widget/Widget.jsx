@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import axios from 'axios';
 import { useState,useEffect } from "react";
 
-const Widget = ({ type }) => {
+const Widget = ({ type,count }) => {
   let data;
   let userCount;
   let token = localStorage.getItem("token");
@@ -21,7 +21,7 @@ useEffect(()=>{
     await axios
       .get("http://34.233.120.213:3000/users", config)
       .then((result) => {
-        console.log("users",result.data.length);
+        console.log("usersuu",result.data.length);
         userCount=result.data.length;
       });
   }

@@ -8,7 +8,7 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { currentUser } from "../../redux/reducers/CurrentUserSlice";
 import { useNavigate } from "react-router-dom";
@@ -27,77 +27,22 @@ const Navbar = () => {
   console.log(token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const currentUser=useSelector((state)=>state.currentUser.value)
+  const currentUser = useSelector((state) => state.currentUser.value);
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  async function fetchOrders() {
-    await axios
-      .get("http://34.233.120.213:3000/orders/all/orders", config)
-      .then((result) => {
-        dispatch(getOrders(result.data));
-      });
-  }
-  async function getRooms() {
-    await axios
-      .get("http://34.233.120.213:3000/rooms/get/ended/1", config)
-      .then((result) => {
-        dispatch(getAllRooms(result.data));
-      });
-  }
-  async function getShops() {
-    await axios
-      .get("http://34.233.120.213:3000/shop", config)
-      .then((result) => {
-        dispatch(getAllShops(result.data));
-      });
-  }
-  async function getProducts() {
-    await axios
-      .get("http://34.233.120.213:3000/products", config)
-      .then((result) => {
-        dispatch(getAllProducts(result.data));
-      });
-  }
-  async function getClubs() {
-    await axios
-      .get("http://34.233.120.213:3000/club/", config)
-      .then((result) => {
-        dispatch(getAllClubs(result.data));
-      });
-  }
+  const [user, usersList] = useState([]);
 
-  async function getClubs() {
-    await axios
-      .get("http://34.233.120.213:3000/club/", config)
-      .then((result) => {
-        dispatch(getAllClubs(result.data));
-      });
-  }
   async function getUserData() {
     await axios
       .get(`http://34.233.120.213:3000/users/${userID}`, config)
       .then((result) => {
-        dispatch(getUser(result.data));
+        usersList(result.data);
       });
-  }
-  async function getUsers() {
-    axios.get("http://34.233.120.213:3000/users", config).then((result) => {
-      console.log("====================================");
-      console.log(result.data);
-      console.log("====================================");
-      dispatch(getAllUsers(result.data));
-    });
   }
 
   useEffect(() => {
-    fetchOrders();
-    getRooms();
-    getProducts();
-    getShops();
-    getClubs();
     getUserData();
-    getUsers();
   }, []);
 
   return (
@@ -111,7 +56,7 @@ const Navbar = () => {
           <div className="item">
             <LanguageOutlinedIcon className="icon" />
             English
-          </div> 
+          </div>
           <div className="item">
             <DarkModeOutlinedIcon
               className="icon"
@@ -133,9 +78,14 @@ const Navbar = () => {
             <ListOutlinedIcon className="icon" />
           </div>
           <div className="item">
-            <span>{currentUser.userName}</span>
+            <span>{user.userName}</span>
             <img
-              src={currentUser.profilePhoto} alt=""
+              src={
+                user.profilePhoto == ""
+                  ? "https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg"
+                  : user.profilePhoto
+              }
+              alt=""
               className="avatar"
             />
           </div>

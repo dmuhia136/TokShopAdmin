@@ -77,6 +77,7 @@ const RoomsTable = () => {
     getRooms();
   }, []);
 
+  const percentage = 66;
 
   return (
     <TableContainer component={Paper} className="table">
@@ -94,7 +95,11 @@ const RoomsTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {room.map((row) => (
+          {room.length == 0 ? (
+            <div style={{ width: 200, height: 200, margin:"auto" }}>
+              <CircularProgressbar counterClockwise={true} value={percentage} text={`${percentage}%`} />
+            </div>
+          ) : room.map((row) => (
             <TableRow key={row._id}>
               <TableCell className="tableCell">
                 {row.ownerId[0].firstName}
@@ -117,7 +122,7 @@ const RoomsTable = () => {
               <TableCell className="tableCell"> <button
                   type="button"
                   id="deleteButton"
-                  className="bg-red-500"
+                  className="bg-red-600 p-2 rounded text-white"
                   onClick={() => {
                     deleteRoom(row._id);
                   }}
