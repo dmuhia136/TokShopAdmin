@@ -4,17 +4,19 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginProcess } from "../../redux/reducers/LoginSlice";
 import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   var error = "";
   async function loginUser() {
-    console.log(email, password);
-
+    // console.log(email, password);
+    // setLoading == true;
     var loginInfo = { email, password };
     axios
       .post("http://34.233.120.213:3000/login", loginInfo)
@@ -25,6 +27,8 @@ const Login = () => {
           localStorage.setItem("token", result.data.token);
           localStorage.setItem("userID", result.data._id);
           dispatch(loginProcess(result.data));
+          // setLoading == false;
+
           navigate("/");
         }
       })
@@ -57,7 +61,7 @@ const Login = () => {
               />
             </svg>
 
-            <h2>Admin</h2>
+            <h2>Admin </h2>
 
             <div className="form">
               <div className="form__field">
@@ -79,7 +83,25 @@ const Login = () => {
               </div>
 
               <div className="form__field">
-                <input type="submit" value="Login" onClick={loginUser} />
+                <input
+                  type="submit"
+                  value={
+                    loading == true ? (
+                      <Audio
+                        height="80"
+                        width="80"
+                        radius="9"
+                        color="green"
+                        ariaLabel="loading"
+                        wrapperStyle
+                        wrapperClass
+                      />
+                    ) : (
+                      "Login"
+                    )
+                  }
+                  onClick={loginUser}
+                />
                 <p>{error}</p>
               </div>
             </div>
