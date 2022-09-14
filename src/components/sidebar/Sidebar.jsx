@@ -15,9 +15,16 @@ import { useContext } from "react";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import WeekendIcon from "@mui/icons-material/Weekend";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const navigate = useNavigate();
+
+  function logout() {
+    localStorage.clear();
+    navigate("/login");
+  }
   return (
     <div className="sidebar">
       <div className="top">
@@ -77,8 +84,7 @@ const Sidebar = () => {
             <span>Notifications</span>
           </li> */}
           <p className="title">SERVICE</p>
-         
-       
+
           <li>
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
@@ -92,7 +98,7 @@ const Sidebar = () => {
           </Link>
           <li>
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <button onClick={() => logout()}>Logout</button>
           </li>
         </ul>
       </div>

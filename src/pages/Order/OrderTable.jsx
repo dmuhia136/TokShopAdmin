@@ -25,44 +25,23 @@ const OrderTable = () => {
     setData(data.filter((item) => item.id !== id));
   };
 
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
-            </Link>
-            <div
-              className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div>
-          </div>
-        );
-      },
-    },
-  ];
-  const navigateTo = useNavigate();
+ 
+  const navigate = useNavigate();
 
-  const percentage = 66;
   let token = localStorage.getItem("token");
-  let userID = localStorage.getItem("userID");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
   const [order, orderList] = useState([]);
-  async function deleteShop(orderid, e) {
-    e.preventDefault();
+  async function deleteShop(orderid) {
+
+
     try {
       await axios
         .delete(`http://34.233.120.213:3000/orders/orders/${orderid}`, config)
         .then((e) => {
           // message.success("Shop deleted");
+          navigate("/orders");
         });
     } catch (e) {
       console.log(e);
@@ -130,7 +109,7 @@ const OrderTable = () => {
                 <TableCell className="tableCell space-x-2">
                   <button
                     className="rounded bg-blue-300 shadow-xl p-2"
-                    onClick={() => navigateTo(`/orders/${row._id}`)}
+                    onClick={() => navigate(`/orders/${row._id}`)}
                   >
                     View Order
                   </button>
