@@ -16,7 +16,7 @@ const Login = () => {
   var error = "";
   async function loginUser() {
     // console.log(email, password);
-    // setLoading == true;
+    setLoading(true);
     var loginInfo = { email, password };
     axios
       .post("http://34.233.120.213:3000/login", loginInfo)
@@ -27,7 +27,7 @@ const Login = () => {
           localStorage.setItem("token", result.data.token);
           localStorage.setItem("userID", result.data._id);
           dispatch(loginProcess(result.data));
-          // setLoading == false;
+          setLoading(false);
 
           navigate("/");
         }
@@ -83,25 +83,13 @@ const Login = () => {
               </div>
 
               <div className="form__field">
-                <input
-                  type="submit"
-                  value={
-                    loading == true ? (
-                      <Audio
-                        height="80"
-                        width="80"
-                        radius="9"
-                        color="green"
-                        ariaLabel="loading"
-                        wrapperStyle
-                        wrapperClass
-                      />
-                    ) : (
-                      "Login"
-                    )
-                  }
-                  onClick={loginUser}
-                />
+                {loading == true ? (
+                  <div className="spinner-container items-center">
+                    <div className="loading-spinner"></div>
+                  </div>
+                ) : (
+                  <input type="submit" value={"Login"} onClick={loginUser} />
+                )}
                 <p>{error}</p>
               </div>
             </div>
