@@ -7,32 +7,32 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
-import axios from 'axios'
+import axios from "axios";
 import { getUser } from "../../redux/reducers/CurrentUserSlice";
+import { useState, useEffect } from "react";
 
 const List = () => {
   const dispatch = useDispatch();
+  const [user, userState] = useState([]);
   let token = localStorage.getItem("token");
   console.log(token);
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
   let userID = localStorage.getItem("userID");
-  var userData=[];
+
   async function getUserData() {
     await axios
       .get(`http://34.233.120.213:3000/users/${userID}`, config)
       .then((result) => {
-        dispatch(getUser(result.data));
-        userData=result.data
+        userState(result.data);
       });
   }
 
-  const users = useSelector((state) => state.allusers.value);
-  console.log('====================================');
-  console.log("my users",users);
-  console.log('====================================');
-  
+useEffect(()=>{
+  getUserData();
+},[])
+
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -49,7 +49,7 @@ const List = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {userData.map((row) => (
+          {user.map((row) => (
             <TableRow key={row._id}>
               <TableCell className="tableCell">{row.firstname}</TableCell>
               <TableCell className="tableCell">{row.lastname}</TableCell>

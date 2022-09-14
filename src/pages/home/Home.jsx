@@ -8,15 +8,9 @@ import Table from "../../components/table/UsersTable";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getOrders } from "../../redux/reducers/OrderSlice";
-import { getAllRooms } from "../../redux/reducers/RoomSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllShops } from "../../redux/reducers/ShopSlice";
-import { getAllProducts } from "../../redux/reducers/ProductSlice";
-import { getAllClubs } from "../../redux/reducers/ClubSlice";
-import { getUser } from "../../redux/reducers/CurrentUserSlice";
-import { getAllUsers } from "../../redux/reducers/UserSlice";
 import Card from "../../components/widget/Card";
+import OrderTable from "../Order/OrderTable";
 const Home = () => {
   let token = localStorage.getItem("token");
   let userID = localStorage.getItem("userID");
@@ -66,7 +60,7 @@ const Home = () => {
     getShops();
   }, []);
 
-  if (token == "") {
+  if (userID == "") {
     navigate("/login");
   } else {
     return (
@@ -80,9 +74,11 @@ const Home = () => {
             <Card count={room} title="ROOMS" />
             <Card count={shop} title="SHOPS" />
           </div>
+          <p className="text-gray-900 pl-10 font-bold text-lg underline">ORDERS</p>
           <div className="charts">
-            <Featured />
-            <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} />
+            <OrderTable />
+            {/* <Featured />
+            <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} /> */}
           </div>
         </div>
       </div>

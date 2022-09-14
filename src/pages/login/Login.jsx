@@ -19,9 +19,6 @@ const Login = () => {
     axios
       .post("http://34.233.120.213:3000/login", loginInfo)
       .then((result) => {
-        console.log("====================================");
-        console.log(result);
-        console.log("====================================");
         if (result.code == "ERR_BAD_REQUEST") {
           error = "You have entered the wrong password";
         } else {

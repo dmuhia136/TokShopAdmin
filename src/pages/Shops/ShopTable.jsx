@@ -13,11 +13,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import moment from "moment";
 import axios from "axios";
-import { message } from "antd";
 import { useDispatch } from "react-redux";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
 const ShopTable = () => {
+  const navigateTo = useNavigate();
   const [data, setData] = useState(userRows);
   const shops = useSelector((state) => state.shops.value);
   const dispatch = useDispatch();
@@ -26,9 +28,7 @@ const ShopTable = () => {
     try {
       await axios
         .get(`http://34.233.120.213:3000/shop/shop/${shopid}`)
-        .then((e) => {
-          message.success("Shop deleted");
-        });
+        .then((e) => {});
     } catch (e) {
       console.log(e);
     }
@@ -57,34 +57,54 @@ const ShopTable = () => {
           <TableRow>
             <TableCell className="tableCell font-bold">Shop Name</TableCell>
             <TableCell className="tableCell">Location</TableCell>
-            <TableCell className="tableCell  overflow-ellipsis w-25">Description</TableCell>
+            <TableCell className="tableCell  overflow-ellipsis w-25">
+              Description
+            </TableCell>
             <TableCell className="tableCell">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {shop.length == 0 ? (
-            <div style={{ width: 200, height: 200, margin:"auto" }}>
-              <CircularProgressbar counterClockwise={true} value={percentage} text={`${percentage}%`} />
+            <div className=" rounded shadow-md w-2/3  relative p-10 pt-10 gap-y-5">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <Audio
+                  height="80"
+                  width="80"
+                  radius="9"
+                  color="green"
+                  ariaLabel="loading"
+                  wrapperStyle
+                  wrapperClass
+                />
+              </div>
             </div>
-          ) :shop.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell className="tableCell ">{row.name}</TableCell>
-              <TableCell className="tableCell">{row.location}</TableCell>
-              <TableCell className="tableCell " >{row.description}</TableCell>
-              <TableCell className="tableCell">
-                <button
-                  type="button"
-                  id="deleteButton"
-                  className="bg-red-600 p-2 rounded text-white"
-                  onClick={() => {
-                    deleteShop(row._id);
-                  }}
-                >
-                  Delete
-                </button>
-              </TableCell>
-            </TableRow>
-          ))}
+          ) : (
+            shop.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell className="tableCell ">{row.name}</TableCell>
+                <TableCell className="tableCell">{row.location}</TableCell>
+                <TableCell className="tableCell w-48">{row.description}</TableCell>
+                <TableCell className="tableCell space-x-5 md:flex flex">
+                  <button
+                    className="rounded bg-blue-300 shadow-xl p-2"
+                    onClick={() => navigateTo(`/shops/${row._id}`)}
+                  >
+                    View Shop
+                  </button>
+                  <button
+                    type="button"
+                    id="deleteButton"
+                    className="bg-red-600 p-2 rounded text-white"
+                    onClick={() => {
+                      deleteShop(row._id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>

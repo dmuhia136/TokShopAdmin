@@ -12,10 +12,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
 
 const ProductTable = () => {
+  const navigateTo = useNavigate();
   const [data, setData] = useState(userRows);
   const products = useSelector((state) => state.product.value);
   const handleDelete = (id) => {
@@ -53,12 +55,12 @@ const ProductTable = () => {
   async function deleteShop(orderid) {
     try {
       await axios
-        .delete(`http://34.233.120.213:3000/products/products/${orderid}`, config)
+        .delete(
+          `http://34.233.120.213:3000/products/products/${orderid}`,
+          config
+        )
         .then((e) => {
           // message.success("Shop deleted");
-          console.log('====================================');
-          console.log(e);
-          console.log('====================================');
         });
     } catch (e) {
       console.log(e);
@@ -91,36 +93,53 @@ const ProductTable = () => {
         </TableHead>
         <TableBody>
           {product.length == 0 ? (
-            <div style={{ width: 200, height: 200, margin:"auto" }}>
-              <CircularProgressbar counterClockwise={true} value={percentage} text={`${percentage}%`} />
+            <div className="">
+              <Audio
+                height="80"
+                width="80"
+                radius="9"
+                color="green"
+                ariaLabel="loading"
+                wrapperStyle
+                wrapperClass
+              />
             </div>
-          ) : product.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell className="tableCell">{row.name}</TableCell>
-              <TableCell className="tableCell">{row.price}</TableCell>
-              <TableCell className="tableCell">
-                <div className="cellWrapper">
-                  <img src={row.images[0]} alt="" className="image" />
-                </div>
-              </TableCell>
-              <TableCell className="tableCell">{row.quantity}</TableCell>
-              <TableCell className="tableCell">
-                {row.ownerId.userName}
-              </TableCell>
-              <TableCell className="tableCell">{row.categories[0]}</TableCell>
-              <TableCell className="tableCell"> <button
-                  type="button"
-                  id="deleteButton"
-                  className="bg-red-600 p-2 rounded text-white"
-                  onClick={() => {
-                    deleteShop(row._id);
-                  }}
-                >
-                  Delete
-                </button></TableCell>
-             
-            </TableRow>
-          ))}
+          ) : (
+            product.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell className="tableCell">{row.name}</TableCell>
+                <TableCell className="tableCell">{row.price}</TableCell>
+                <TableCell className="tableCell">
+                  <div className="cellWrapper">
+                    <img src={row.images[0]} alt="" className="image" />
+                  </div>
+                </TableCell>
+                <TableCell className="tableCell">{row.quantity}</TableCell>
+                <TableCell className="tableCell">
+                  {row.ownerId.userName}
+                </TableCell>
+                <TableCell className="tableCell">{row.categories[0]}</TableCell>
+                <TableCell className="tableCell space-x-5 md:flex flex">
+                  <button
+                    className="rounded bg-blue-300 shadow-xl p-2"
+                    onClick={() => navigateTo(`/products/${row._id}`)}
+                  >
+                    View Product
+                  </button>
+                  <button
+                    type="button"
+                    id="deleteButton"
+                    className="bg-red-600 p-2 rounded text-white"
+                    onClick={() => {
+                      deleteShop(row._id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>

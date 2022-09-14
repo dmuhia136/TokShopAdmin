@@ -13,8 +13,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
 
 const OrderTable = () => {
   const [data, setData] = useState(userRows);
@@ -45,6 +47,8 @@ const OrderTable = () => {
       },
     },
   ];
+  const navigateTo = useNavigate();
+
   const percentage = 66;
   let token = localStorage.getItem("token");
   let userID = localStorage.getItem("userID");
@@ -59,9 +63,6 @@ const OrderTable = () => {
         .delete(`http://34.233.120.213:3000/orders/orders/${orderid}`, config)
         .then((e) => {
           // message.success("Shop deleted");
-          console.log("====================================");
-          console.log(e);
-          console.log("====================================");
         });
     } catch (e) {
       console.log(e);
@@ -92,34 +93,61 @@ const OrderTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-
-          {order.length==0?<div style={{ width: 200, height: 200,justifyContent: "center"  }}><CircularProgressbar  value={percentage} text={`${percentage}%`} /></div >: order.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell className="tableCell">
-                {row.customerId.firstName} {row.customerId.lastName}
-              </TableCell>
-              <TableCell className="tableCell">{row.quantity}</TableCell>
-              <TableCell className="tableCell">
-                <div className="cellWrapper">
-                  {JSON.stringify(row.shippingId.city)}
-                </div>
-              </TableCell>
-              <TableCell className="tableCell">{row.subTotal}</TableCell>
-              <TableCell className="tableCell">{row.status}</TableCell>
-              <TableCell className="tableCell">
-                <button
-                  type="button"
-                  id="deleteButton"
-                  className="bg-red-600 p-2 rounded text-white"
-                  onClick={() => {
-                    deleteShop(row._id);
-                  }}
+          {order.length == 0 ? (
+            <div className=" ">
+              <Audio
+                height="80"
+                width="80"
+                radius="9"
+                color="green"
+                ariaLabel="loading"
+                wrapperStyle
+                wrapperClass
+              />
+            </div>
+          ) : (
+            order.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell className="tableCell">
+                  {row.customerId.firstName} {row.customerId.lastName}
+                </TableCell>
+                <TableCell className="tableCell">{row.quantity}</TableCell>
+                <TableCell className="tableCell">
+                  <div className="cellWrapper">
+                    {JSON.stringify(row.shippingId.city)}
+                  </div>
+                </TableCell>
+                <TableCell className="tableCell">{row.subTotal}</TableCell>
+                <TableCell
+                  className={
+                    row.status == "delivered"
+                      ? "tableCell text-green-800"
+                      : "tableCell text-yellow-600"
+                  }
                 >
-                  Delete
-                </button>
-              </TableCell>
-            </TableRow>
-          ))}
+                  {row.status}
+                </TableCell>
+                <TableCell className="tableCell space-x-2">
+                  <button
+                    className="rounded bg-blue-300 shadow-xl p-2"
+                    onClick={() => navigateTo(`/orders/${row._id}`)}
+                  >
+                    View Order
+                  </button>
+                  <button
+                    type="button"
+                    id="deleteButton"
+                    className="bg-red-600 p-2 rounded text-white"
+                    onClick={() => {
+                      deleteShop(row._id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>

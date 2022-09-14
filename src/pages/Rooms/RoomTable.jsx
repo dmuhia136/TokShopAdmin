@@ -15,35 +15,12 @@ import moment from "moment";
 import axios from "axios";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
+import { Audio } from "react-loader-spinner";
+
 const RoomsTable = () => {
   const [data, setData] = useState(userRows);
-
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
-
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
-            </Link>
-            <div
-              className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div>
-          </div>
-        );
-      },
-    },
-  ];
+  const navigateTo = useNavigate();
   let token = localStorage.getItem("token");
   let userID = localStorage.getItem("userID");
   const config = {
@@ -51,16 +28,16 @@ const RoomsTable = () => {
   };
   const [room, roomList] = useState([]);
 
-  async function deleteRoom(roomid) {
-
+  async function deleteRoom(roomid, event) {
+    // event.preventDefault();
     try {
       await axios
-        .delete(`http://34.233.120.213:3000/rooms/rooms/${roomid}`,config)
+        .delete(`http://34.233.120.213:3000/rooms/rooms/${roomid}`, config)
         .then((e) => {
           // message.success("Shop deleted");
-          console.log('====================================');
-          console.log(e);
-          console.log('====================================');
+          console.log("====================================");
+          console.log("deleted", e.response.data);
+          console.log("====================================");
         });
     } catch (e) {
       console.log(e);
@@ -76,8 +53,6 @@ const RoomsTable = () => {
   useEffect(() => {
     getRooms();
   }, []);
-
-  const percentage = 66;
 
   return (
     <TableContainer component={Paper} className="table">
@@ -96,42 +71,62 @@ const RoomsTable = () => {
         </TableHead>
         <TableBody>
           {room.length == 0 ? (
-            <div style={{ width: 200, height: 200, margin:"auto" }}>
-              <CircularProgressbar counterClockwise={true} value={percentage} text={`${percentage}%`} />
+            <div className="">
+              <Audio
+                height="80"
+                width="80"
+                radius="9"
+                color="green"
+                ariaLabel="loading"
+                wrapperStyle
+                wrapperClass
+              />
             </div>
-          ) : room.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell className="tableCell">
-                {row.ownerId[0].firstName}
-              </TableCell>
-              <TableCell className="tableCell">
-                {row.title == "" ? "No room title" : row.title}
-              </TableCell>
+          ) : (
+            room.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell className="tableCell">
+                  {row.ownerId[0].firstName}
+                </TableCell>
+                <TableCell className="tableCell">
+                  {row.title == "" ? "No room title" : row.title}
+                </TableCell>
 
-              <TableCell className="tableCell">
-                {row.speakerIds.length}
-              </TableCell>
-              <TableCell className="tableCell">{row.allUsers.length}</TableCell>
-              <TableCell className="tableCell">{row.productPrice}</TableCell>
-              <TableCell className="tableCell">
-                {row.discount == null ? "No discount" : row.discount}
-              </TableCell>
-              <TableCell className="tableCell">
-                {moment(row.activeTime).format("YYYY:MM:DD HH:MM")}
-              </TableCell>
-              <TableCell className="tableCell"> <button
-                  type="button"
-                  id="deleteButton"
-                  className="bg-red-600 p-2 rounded text-white"
-                  onClick={() => {
-                    deleteRoom(row._id);
-                  }}
-                >
-                  Delete
-                </button></TableCell>
+                <TableCell className="tableCell">
+                  {row.speakerIds.length}
+                </TableCell>
+                <TableCell className="tableCell">
+                  {row.allUsers.length}
+                </TableCell>
+                <TableCell className="tableCell">{row.productPrice}</TableCell>
+                <TableCell className="tableCell">
+                  {row.discount == null ? "No discount" : row.discount}
+                </TableCell>
+                <TableCell className="tableCell">
+                  {moment(row.activeTime).format("YYYY:MM:DD HH:MM")}
+                </TableCell>
+                <TableCell className="tableCell space-x-5 md:flex flex">
+                  <button
+                    className="rounded bg-blue-300 shadow-xl p-2"
+                    onClick={() => navigateTo(`/rooms/${row._id}`)}
+                  >
+                    View Room
+                  </button>
 
-            </TableRow>
-          ))}
+                  <button
+                    type="button"
+                    id="deleteButton"
+                    className="bg-red-600 p-2 rounded text-white"
+                    onClick={() => {
+                      deleteRoom(row._id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>
